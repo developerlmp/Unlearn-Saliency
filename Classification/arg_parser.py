@@ -60,7 +60,7 @@ def parse_args():
     parser.add_argument(
         "--save_dir",
         help="The directory used to save the trained models",
-        default=None,
+        default='./checkpoints',
         type=str,
     )
     parser.add_argument("--model_path", type=str, default=None, help="the path of original model")
