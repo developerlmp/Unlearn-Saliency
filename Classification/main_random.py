@@ -186,7 +186,8 @@ def main():
             model=model,
         )
         unlearn.save_unlearn_checkpoint(model, evaluation_result, args)
-
+        
+    print(evaluation_result["SVC_MIA_forget_efficacy"])
     unlearn.save_unlearn_checkpoint(model, evaluation_result, args)
 
 
