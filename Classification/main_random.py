@@ -11,7 +11,7 @@ import torch.utils.data
 import unlearn
 import utils
 from trainer import validate
-
+from generate_mask import save_gradient_ratio
 def main():
     args = arg_parser.parse_args()
 
@@ -130,8 +130,10 @@ def main():
         if "state_dict" in checkpoint.keys():
             checkpoint = checkpoint["state_dict"]
 
-        if args.mask_path:
-            mask = torch.load(args.mask_path)
+        # if args.mask_path:
+        #     mask = torch.load(args.mask_path)
+        save_gradient_ratio(unlearn_data_loaders, model, criterion, args)
+        mask = torch.load(os.path.join(args.save_dir, "with_0.5.pt"))  # Chọn ngưỡng 0.5 làm ví dụ
 
         if args.unlearn != "retrain":
             model.load_state_dict(checkpoint, strict=False)
