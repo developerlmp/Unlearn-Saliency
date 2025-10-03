@@ -30,6 +30,8 @@ pip install -r requirements.txt
    ```
    CUDA_VISIBLE_DEVICES="0,1" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder results/cifar10/yyyy_mm_dd_hhmmss --label_to_forget 0 --mode generate_mask
    ```
+
+   example:
    
    ```
    !CUDA_VISIBLE_DEVICES="0" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder /content/Unlearn-Saliency/DDPM/ --label_to_forget 0 --mode generate_mask
@@ -37,11 +39,13 @@ pip install -r requirements.txt
    
    This will save saliency map in `results/cifar10/unlearn/mask`.
 
-3. Forgetting training with Saliency-Unlearning
+4. Forgetting training with Saliency-Unlearning
 
    ```
    CUDA_VISIBLE_DEVICES="0,1" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder results/cifar10/yyyy_mm_dd_hhmmss --label_to_forget 0 --mode saliency_unlearn --mask_path results/cifar10/unlearn/mask/{mask_name} --alpha 1e-3 --method rl
    ```
+
+   example:
 
    ```
    !CUDA_VISIBLE_DEVICES="0" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder /content/Unlearn-Saliency/DDPM/ --label_to_forget 0 --mode saliency_unlearn --mask_path /content/Unlearn-Saliency/DDPM/results/cifar10/mask/0/with_0.5.pt --alpha 1e-3 --method rl
