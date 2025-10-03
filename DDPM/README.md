@@ -30,7 +30,10 @@ pip install -r requirements.txt
    ```
    CUDA_VISIBLE_DEVICES="0,1" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder results/cifar10/yyyy_mm_dd_hhmmss --label_to_forget 0 --mode generate_mask
    ```
-
+   
+   ```!CUDA_VISIBLE_DEVICES="0" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder /content/Unlearn-Saliency/DDPM/ --label_to_forget 0 --mode generate_mask
+   ```
+   
    This will save saliency map in `results/cifar10/unlearn/mask`.
 
 3. Forgetting training with Saliency-Unlearning
@@ -39,6 +42,10 @@ pip install -r requirements.txt
    CUDA_VISIBLE_DEVICES="0,1" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder results/cifar10/yyyy_mm_dd_hhmmss --label_to_forget 0 --mode saliency_unlearn --mask_path results/cifar10/unlearn/mask/{mask_name} --alpha 1e-3 --method rl
    ```
 
+   ```
+   !CUDA_VISIBLE_DEVICES="0" python train.py --config cifar10_saliency_unlearn.yml --ckpt_folder /content/Unlearn-Saliency/DDPM/ --label_to_forget 0 --mode saliency_unlearn --mask_path /content/Unlearn-Saliency/DDPM/results/cifar10/mask/0/with_0.5.pt --alpha 1e-3 --method rl
+   ```
+   
    This should create another folder in `results/cifar10/unlearn/{method_name}`. 
 
    You can experiment with forgetting different class labels using the `--label_to_forget` flag, but we will consider forgetting the 0 (airplane) class here.
