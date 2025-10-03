@@ -190,28 +190,34 @@ class Diffusion(object):
         with open(os.path.join(args.ckpt_folder, "fisher_dict.pkl"), "wb") as f:
             pickle.dump(fisher_dict, f)
 
-
     def train(self):
             args, config = self.args, self.config
             D_train_loader = get_dataset(args, config)
             D_train_iter = cycle(D_train_loader)
             
             model = Conditional_Model(config)
-
-            optimizer = get_optimizer(self.config, model.parameters())
-            model.to(self.device)
-            model = torch.nn.DataParallel(model)
-            
+            ema_helper = None  
             if self.config.model.ema:
                 ema_helper = EMAHelper(mu=self.config.model.ema_rate)
                 ema_helper.register(model)
-            else:
-                ema_helper = None
-            
+            optimizer = get_optimizer(self.config, model.parameters())
+            model.to(self.device)
+            model = torch.nn.DataParallel(model)
+            if args.ckpt_folder:
+                checkpoint = torch.load(args.ckpt_folder, map_location=self.device)
+                model.load_state_dict(checkpoint[0])
+                optimizer.load_state_dict(checkpoint[1])
+                start_step = checkpoint[2]
+                if config.model.ema and len(checkpoint) > 3:
+                        if ema_helper is None:
+                            ema_helper = EMAHelper(mu=config.model.ema_rate)
+                            ema_helper.register(model)
+                        ema_helper.load_state_dict(checkpoint[3])
+                logging.info(f"Loading checkpoint {args.ckpt_folder} from {start_step}")
             model.train()
-            
+            start_step=start_step+1
             start = time.time()
-            for step in range(0, self.config.training.n_iters):
+            for step in range(start_step, self.config.training.n_iters):
 
                 model.train()
                 x, c = next(D_train_iter)
