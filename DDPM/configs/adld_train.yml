@@ -6,10 +6,10 @@ data:
     logit_transform: false
     uniform_dequantization: false
     gaussian_dequantization: false
-    random_flip: false
+    random_flip: true
     rescaled: true
     num_workers: 4
-    n_classes: 10
+    n_classes: 2
 
 model:
     type: simple
