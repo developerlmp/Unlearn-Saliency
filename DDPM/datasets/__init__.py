@@ -31,18 +31,20 @@ def get_dataset(args, config):
     """
     Returns vanilla CIFAR10/STL10 dataset.
     """
-    if config.data.random_flip is False:
-        tran_transform = transforms.Compose(
-            [transforms.Resize(config.data.image_size), transforms.ToTensor()]
-        )
+    target_h = config.data.image_size
+    target_w = config.data.image_size  
+    if not config.data.random_flip:
+        
+        tran_transform = transforms.Compose([
+            transforms.Resize((target_h, target_w)),
+            transforms.ToTensor(),
+        ])
     else:
-        tran_transform = transforms.Compose(
-            [
-                transforms.Resize(config.data.image_size),
-                transforms.RandomHorizontalFlip(p=0.5),
-                transforms.ToTensor(),
-            ]
-        )
+        tran_transform = transforms.Compose([
+            transforms.Resize((target_h, target_w)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.ToTensor(),
+        ])
 
     if config.data.dataset == "CIFAR10":
         dataset = CIFAR10(
