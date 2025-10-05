@@ -196,13 +196,14 @@ class Diffusion(object):
             D_train_iter = cycle(D_train_loader)
             
             model = Conditional_Model(config)
+            model.to(self.device)
+            model = torch.nn.DataParallel(model)
             ema_helper = None  
             if self.config.model.ema:
                 ema_helper = EMAHelper(mu=self.config.model.ema_rate)
                 ema_helper.register(model)
             optimizer = get_optimizer(self.config, model.parameters())
-            model.to(self.device)
-            model = torch.nn.DataParallel(model)
+
             if args.ckpt_folder:
                 checkpoint = torch.load(args.ckpt_folder, map_location=self.device)
                 model.load_state_dict(checkpoint[0])
@@ -217,7 +218,9 @@ class Diffusion(object):
                 logging.info(f"Loading checkpoint {args.ckpt_folder} from {start_step}")
             else:
                 start_step=0
+
             model.train()
+            
             start = time.time()
             for step in range(start_step, self.config.training.n_iters):
 
@@ -228,6 +231,7 @@ class Diffusion(object):
                 x = data_transform(self.config, x)
                 e = torch.randn_like(x)
                 b = self.betas
+
 
                 # antithetic sampling
                 t = torch.randint(
