@@ -67,7 +67,16 @@ def get_dataset(args, config):
             transform=tran_transform,
         )
         dataset = ConcatDataset([train_dataset, test_dataset])
+    else:
+         # load dataset từ thư mục chia class
+        dataset = ImageFolder(
+            root=config.data.path,
+            transform=tran_transform
+        )
 
+        # in ra các class nếu muốn debug
+        print(f"Found {len(dataset.classes)} classes: {dataset.classes}")
+        print(f"Total images: {len(dataset)}")
     train_loader = DataLoader(
         dataset,
         batch_size=config.training.batch_size,
