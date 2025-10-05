@@ -208,14 +208,16 @@ class Diffusion(object):
                 model.load_state_dict(checkpoint[0])
                 optimizer.load_state_dict(checkpoint[1])
                 start_step = checkpoint[2]
+                start_step=start_step+1
                 if config.model.ema and len(checkpoint) > 3:
                         if ema_helper is None:
                             ema_helper = EMAHelper(mu=config.model.ema_rate)
                             ema_helper.register(model)
                         ema_helper.load_state_dict(checkpoint[3])
                 logging.info(f"Loading checkpoint {args.ckpt_folder} from {start_step}")
+            else:
+                start_step=0
             model.train()
-            start_step=start_step+1
             start = time.time()
             for step in range(start_step, self.config.training.n_iters):
 
