@@ -1,5 +1,5 @@
 data:
-    path: /kaggle/working/adld_split
+    path: /kaggle/input/adld-split
     dataset: adld_split
     image_size: 32
     channels: 3
