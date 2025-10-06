@@ -37,12 +37,14 @@ def get_dataset(args, config):
         
         tran_transform = transforms.Compose([
             transforms.Resize((target_h, target_w)),
+            transforms.Grayscale(num_output_channels=1),  # ✅ ép về 1 channel
             transforms.ToTensor(),
         ])
     else:
         tran_transform = transforms.Compose([
             transforms.Resize((target_h, target_w)),
             transforms.RandomHorizontalFlip(p=0.5),
+            transforms.Grayscale(num_output_channels=1),  # ✅ ép về 1 channel
             transforms.ToTensor(),
         ])
 
