@@ -261,6 +261,7 @@ class Conditional_Model(nn.Module):
                         in_channels=block_in,
                         out_channels=block_out,
                         temb_channels=self.temb_ch,
+                        cemb_channels=self.cemb_ch,
                         dropout=dropout,
                     )
                 )
@@ -281,6 +282,7 @@ class Conditional_Model(nn.Module):
             in_channels=block_in,
             out_channels=block_in,
             temb_channels=self.temb_ch,
+            cemb_channels=self.cemb_ch,
             dropout=dropout,
         )
         self.mid.attn_1 = AttnBlock(block_in)
@@ -288,6 +290,7 @@ class Conditional_Model(nn.Module):
             in_channels=block_in,
             out_channels=block_in,
             temb_channels=self.temb_ch,
+            cemb_channels=self.cemb_ch,
             dropout=dropout,
         )
 
@@ -306,6 +309,7 @@ class Conditional_Model(nn.Module):
                         in_channels=block_in + skip_in,
                         out_channels=block_out,
                         temb_channels=self.temb_ch,
+                        cemb_channels=self.cemb_ch,
                         dropout=dropout,
                     )
                 )
